@@ -4,29 +4,20 @@ go 1.16
 
 require (
 	cloud.google.com/go/storage v1.6.0
-	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/ahmetb/gen-crd-api-reference-docs v0.2.0
 	github.com/coreos/go-systemd/v22 v22.1.0
-	github.com/dsnet/compress v0.0.1 // indirect
-	github.com/frankban/quicktest v1.9.0 // indirect
 	github.com/gardener/etcd-druid v0.3.0
-	github.com/gardener/gardener v1.11.3
+	github.com/gardener/gardener v1.17.1
 	github.com/gardener/machine-controller-manager v0.36.0
 	github.com/go-logr/logr v0.3.0
 	github.com/golang/mock v1.5.0
-	github.com/golang/snappy v0.0.2 // indirect
-	github.com/mitchellh/copystructure v1.1.1 // indirect
-	github.com/nwaples/rardecode v1.1.0 // indirect
 	github.com/onsi/ginkgo v1.14.2
 	github.com/onsi/gomega v1.10.5
-	github.com/pierrec/lz4 v2.5.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.8.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/pflag v1.0.5
-	github.com/ulikunitz/xz v0.5.7 // indirect
-	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	google.golang.org/api v0.20.0
 	k8s.io/api v0.20.2
@@ -45,7 +36,8 @@ require (
 )
 
 replace (
-	github.com/gardener/gardener => github.com/stoyanr/gardener v1.19.1-0.20210416132031-8bd4db5e1485
+	github.com/gardener/etcd-druid => github.com/stoyanr/etcd-druid v0.3.1-0.20210429085731-f8d192f820f8
+	github.com/gardener/gardener => github.com/stoyanr/gardener v1.20.1-0.20210429095104-a65cf875d7ee
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.7.1 // keep this value in sync with sigs.k8s.io/controller-runtime
 	k8s.io/api => k8s.io/api v0.20.2
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.2
