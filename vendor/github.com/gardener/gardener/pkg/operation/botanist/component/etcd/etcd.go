@@ -104,8 +104,8 @@ type Etcd interface {
 	component.MonitoringComponent
 	// ServiceDNSNames returns the service DNS names for the etcd.
 	ServiceDNSNames() []string
-	// Snapshot triggers the backup-restore sidecar to perform a full snapshot in case backup configuration is provided.
-	Snapshot(context.Context, kubernetes.PodExecutor) error
+	// CopyOperation triggers the backup-restore sidecar to initialize a copy operation.
+	CopyOperation(context.Context, kubernetes.PodExecutor) error
 	// SetSecrets sets the secrets.
 	SetSecrets(Secrets)
 	// SetBackupConfig sets the backup configuration.
@@ -114,6 +114,8 @@ type Etcd interface {
 	SetSourceBackupConfig(config *BackupConfig)
 	// SetHVPAConfig sets the HVPA configuration.
 	SetHVPAConfig(config *HVPAConfig)
+	// IsBackupCopied checks to see if the ETCD backup has been copied to the destination backupbucket
+	IsBackupCopied(context.Context) (bool, error)
 }
 
 // New creates a new instance of DeployWaiter for the Etcd.
@@ -567,11 +569,7 @@ func (e *etcd) emptyHVPA() *hvpav1alpha1.Hvpa {
 	return &hvpav1alpha1.Hvpa{ObjectMeta: metav1.ObjectMeta{Name: Name(e.role), Namespace: e.namespace}}
 }
 
-func (e *etcd) Snapshot(ctx context.Context, podExecutor kubernetes.PodExecutor) error {
-	if e.backupConfig == nil {
-		return fmt.Errorf("no backup is configured for this etcd, cannot make a snapshot")
-	}
-
+func (e *etcd) CopyOperation(ctx context.Context, podExecutor kubernetes.PodExecutor) error {
 	etcdMainSelector := e.podLabelSelector()
 
 	podsList := &corev1.PodList{}
@@ -590,7 +588,7 @@ func (e *etcd) Snapshot(ctx context.Context, podExecutor kubernetes.PodExecutor)
 		podsList.Items[0].GetName(),
 		containerNameBackupRestore,
 		"/bin/sh",
-		fmt.Sprintf("curl -k https://etcd-%s-local:%d/snapshot/full", e.role, PortBackupRestore),
+		fmt.Sprintf("curl -k https://etcd-%s-local:%d/object/copyop", e.role, PortBackupRestore),
 	)
 	return err
 }
@@ -602,10 +600,33 @@ func (e *etcd) ServiceDNSNames() []string {
 	)
 }
 
+func (e *etcd) IsBackupCopied(ctx context.Context) (bool, error) {
+	numContainers, err := e.getNumContainersInEtcdMainPod(ctx)
+	return numContainers == 2, err
+}
+
 func (e *etcd) SetSecrets(secrets Secrets)                       { e.secrets = secrets }
 func (e *etcd) SetBackupConfig(backupConfig *BackupConfig)       { e.backupConfig = backupConfig }
 func (e *etcd) SetSourceBackupConfig(backupConfig *BackupConfig) { e.sourceBackupConfig = backupConfig }
 func (e *etcd) SetHVPAConfig(hvpaConfig *HVPAConfig)             { e.hvpaConfig = hvpaConfig }
+
+func (e *etcd) getNumContainersInEtcdMainPod(ctx context.Context) (int, error) {
+	etcdMainSelector := e.podLabelSelector()
+
+	podsList := &corev1.PodList{}
+	if err := e.client.List(ctx, podsList, client.InNamespace(e.namespace), client.MatchingLabelsSelector{Selector: etcdMainSelector}); err != nil {
+		return 0, err
+	}
+	if len(podsList.Items) == 0 {
+		return 0, nil
+	}
+
+	if len(podsList.Items) > 1 {
+		return 0, fmt.Errorf("multiple ETCD Pods found. Pod list found: %v", podsList.Items)
+	}
+
+	return len(podsList.Items[0].Spec.Containers), nil
+}
 
 func (e *etcd) podLabelSelector() labels.Selector {
 	app, _ := labels.NewRequirement(v1beta1constants.LabelApp, selection.Equals, []string{LabelAppValue})

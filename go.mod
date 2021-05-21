@@ -37,7 +37,7 @@ require (
 
 replace (
 	github.com/gardener/etcd-druid => github.com/stoyanr/etcd-druid v0.3.1-0.20210429085731-f8d192f820f8
-	github.com/gardener/gardener => github.com/stoyanr/gardener v1.20.1-0.20210429095104-a65cf875d7ee
+	github.com/gardener/gardener => github.com/stoyanr/gardener v0.0.0-20210518130430-2fcf0cd922cf
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.7.1 // keep this value in sync with sigs.k8s.io/controller-runtime
 	k8s.io/api => k8s.io/api v0.20.2
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.2
