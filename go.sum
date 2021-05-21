@@ -553,8 +553,8 @@ github.com/spf13/viper v1.7.0/go.mod h1:8WkrPz2fc9jxqZNCJI/76HCieCp4Q8HaLFoCha5q
 github.com/stoewer/go-strcase v1.2.0/go.mod h1:IBiWB2sKIp3wVVQ3Y035++gc+knqhUQag1KpM8ahLw8=
 github.com/stoyanr/etcd-druid v0.3.1-0.20210429085731-f8d192f820f8 h1:wHa/GW6s3jduNQe9YcyuBYfF3ZY4+QW+Bnx6aotATqk=
 github.com/stoyanr/etcd-druid v0.3.1-0.20210429085731-f8d192f820f8/go.mod h1:Ca2ZM9dyMdZI6k5RW4wu8CG8q5cNeF/HSE2P+hut0+g=
-github.com/stoyanr/gardener v1.20.1-0.20210429095104-a65cf875d7ee h1:yNGUwMyVUVTSmT70sZCN1ApGKZJRemNt/pPR/NwWcu0=
-github.com/stoyanr/gardener v1.20.1-0.20210429095104-a65cf875d7ee/go.mod h1:V7ougxGeOk++W8H8mvwfcKjm9kKGgqzdpAX3xrSVP2E=
+github.com/stoyanr/gardener v0.0.0-20210518130430-2fcf0cd922cf h1:lL/TVho40ywd0o2fA1wcQU5FB1DiHMLhBNOQ7BUgaU0=
+github.com/stoyanr/gardener v0.0.0-20210518130430-2fcf0cd922cf/go.mod h1:V7ougxGeOk++W8H8mvwfcKjm9kKGgqzdpAX3xrSVP2E=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.2.0/go.mod h1:qt09Ya8vawLte6SNmTgCsAVtYtaKzEcn8ATUoHMkEqE=
